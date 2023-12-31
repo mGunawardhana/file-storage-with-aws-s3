@@ -1,63 +1,45 @@
 package com.mgunawardhana.s3.service;
 
-import com.amazonaws.services.dynamodbv2.xspec.S;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.amazonaws.util.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
-@Service
-public class StorageService {
+/**
+ * Created By - mgunawardhana
+ * Date - 2023-12-31
+ * Time - 17.23
+ */
 
-    @Value("${cloud.aws.s3.bucketName}")
-    private String bucketName;
+public interface StorageService {
+    /**
+     * This method is used to upload a file to the storage.
+     *
+     * @param file This is the file that needs to be uploaded.
+     * @return String This returns the name of the uploaded file.
+     */
+    String uploadFile(MultipartFile file);
 
-    @Autowired
-    private AmazonS3 s3Client;
+    /**
+     * This method is used to download a file from the storage.
+     *
+     * @param fileName This is the name of the file that needs to be downloaded.
+     * @return byte[] This returns the content of the downloaded file in byte array format.
+     */
+    byte[] downloadFile(String fileName);
 
-    public String uploadFile(MultipartFile file) {
-        File fileObject = convertMultiPartFileToFile(file);
-        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObject));
-        fileObject.delete();
-        return "file uploaded "+ fileName;
-    }
+    /**
+     * This method is used to convert a MultipartFile into a File.
+     *
+     * @param file This is the MultipartFile that needs to be converted.
+     * @return File This returns the converted File.
+     */
+    File convertMultiPartFileToFile(MultipartFile file);
 
-    public byte[] downloadFile(String fileName){
-        S3Object s3ClientObject = s3Client.getObject(bucketName, fileName);
-        S3ObjectInputStream inputStream = s3ClientObject.getObjectContent();
-        try{
-            byte[] content = IOUtils.toByteArray(inputStream);
-            return content;
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private File convertMultiPartFileToFile(MultipartFile file) {
-        File convertedFile = new File(file.getOriginalFilename());
-        try (FileOutputStream fileOutputStream = new FileOutputStream(convertedFile)) {
-            fileOutputStream.write(file.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return convertedFile;
-    }
-
-    public String deleteFile(String fileName){
-        s3Client.deleteObject(bucketName,fileName);
-        return fileName+" deleted successful!";
-    }
-
-
+    /**
+     * This method is used to delete a file from the storage.
+     *
+     * @param fileName This is the name of the file that needs to be deleted.
+     * @return String This returns the name of the deleted file.
+     */
+    String deleteFile(String fileName);
 }
