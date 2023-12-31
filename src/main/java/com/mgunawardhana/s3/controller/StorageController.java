@@ -1,12 +1,12 @@
 package com.mgunawardhana.s3.controller;
 
+import com.mgunawardhana.s3.domain.APIResponse;
 import com.mgunawardhana.s3.service.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -25,9 +25,13 @@ public class StorageController {
     }
 
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam(value = "file") MultipartFile file) {
+    public ResponseEntity<APIResponse> uploadFile(@RequestParam(value = "file") MultipartFile file) {
         return storageService.uploadFile(file);
     }
 
+    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName){
+        byte[] data = storageService.downloadFile(fileName);
+        ByteArrayResource resource =
+    }
 
 }

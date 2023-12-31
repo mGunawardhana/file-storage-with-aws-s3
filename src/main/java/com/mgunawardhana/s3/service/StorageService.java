@@ -1,5 +1,7 @@
 package com.mgunawardhana.s3.service;
 
+import com.mgunawardhana.s3.domain.APIResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -17,7 +19,7 @@ public interface StorageService {
      * @param file This is the file that needs to be uploaded.
      * @return String This returns the name of the uploaded file.
      */
-    String uploadFile(MultipartFile file);
+    ResponseEntity<APIResponse> uploadFile(MultipartFile file);
 
     /**
      * This method is used to download a file from the storage.
@@ -41,5 +43,5 @@ public interface StorageService {
      * @param fileName This is the name of the file that needs to be deleted.
      * @return String This returns the name of the deleted file.
      */
-    String deleteFile(String fileName);
+    ResponseEntity<APIResponse> deleteFile(String fileName);
 }
