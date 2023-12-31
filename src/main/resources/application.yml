@@ -1,30 +1,25 @@
-# This is the configuration file for a Spring Boot application that uses AWS services and handles multipart file uploads.
 
-# AWS credentials and region settings.
 cloud:
   aws:
-    credentials: # AWS access key, set as an environment variable.
-      accessKey: ${AWS_ACCESS_KEY}
-      # AWS secret key, set as an environment variable.
-      secretKey: ${AWS_SECRET_KEY}
-    region: # AWS region is set to Seoul (ap-northeast-2).
-      static: ap-northeast-2
-    stack: # The AWS SDK won't attempt to fetch the stack name automatically.
+    credentials:
+      access-key: AWS_ACCESS_KEY
+      secret-key: AWS_SECRET_KEY
+    region:
+      static: AWS_REGION
+    stack:
       auto: false
 
-# Custom application properties.
 application:
-  bucket: # Placeholder for the AWS S3 bucket name.
-    name: ${AWS_BUCKET_NAME}
+  bucket:
+    name: AWS_BUCKET_NAME
 
-# Multipart file upload settings for the Spring Boot application.
 spring:
   servlet:
-    multipart: # Multipart file upload is enabled.
+    multipart:
       enabled: true
-      # A file will be written to disk if its size exceeds 2MB.
       file-size-threshold: 2MB
-      # The maximum size of a file that the application can handle is 10MB.
-      max-file-size: 10MB
-      # The maximum size of a request that the application can handle is 10MB.
+      max-file-size: 5MB
       max-request-size: 10MB
+
+server:
+  port: 8080

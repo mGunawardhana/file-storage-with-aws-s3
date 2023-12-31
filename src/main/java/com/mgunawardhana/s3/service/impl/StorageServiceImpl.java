@@ -9,6 +9,7 @@ import com.mgunawardhana.s3.domain.APIResponse;
 import com.mgunawardhana.s3.service.StorageService;
 import com.mgunawardhana.s3.util.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +28,14 @@ public class StorageServiceImpl implements StorageService {
     private final ResponseUtils responseUtils;
 
 
-    @Value("${cloud.aws.s3.bucketName}")
+    @Value("${application.bucket.name}")
     private String bucketName;
 
-    private final AmazonS3 s3Client;
+    @Autowired
+    private AmazonS3 s3Client;
 
-    public StorageServiceImpl(ResponseUtils responseUtils, AmazonS3 s3Client) {
+    public StorageServiceImpl(ResponseUtils responseUtils) {
         this.responseUtils = responseUtils;
-        this.s3Client = s3Client;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.mgunawardhana.s3.controller;
 import com.mgunawardhana.s3.domain.APIResponse;
 import com.mgunawardhana.s3.service.StorageService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/storage")
 public class StorageController {
-    private final StorageService storageService;
 
-    private StorageController(StorageService storageService) {
-        this.storageService = storageService;
-    }
+    @Autowired
+    private StorageService storageService;
 
     @PostMapping("/upload")
     public ResponseEntity<APIResponse> uploadFile(@RequestParam(value = "file") MultipartFile file) {

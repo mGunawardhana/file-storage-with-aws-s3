@@ -8,23 +8,23 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * Created By - mgunawardhana
  * Date - 2023-12-31
  * Time - 14.34
  */
-
 @Configuration
 public class StorageConfig {
 
-    @Value("${cloud.aws.s3.accessKey}")
+    @Value("${cloud.aws.credentials.access-key}")
     private String accessKey;
 
-    @Value("${cloud.aws.s3.secretKey}")
+    @Value("${cloud.aws.credentials.secret-key}")
     private String secretKey;
 
-    @Value("${cloud.aws.s3.region.static}")
+    @Value("${cloud.aws.region.static}")
     private String region;
 
     @Bean
