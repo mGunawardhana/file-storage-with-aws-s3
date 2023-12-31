@@ -3,7 +3,6 @@ package com.mgunawardhana.s3.controller;
 import com.mgunawardhana.s3.domain.APIResponse;
 import com.mgunawardhana.s3.service.StorageService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +28,18 @@ public class StorageController {
         return storageService.uploadFile(file);
     }
 
-    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName){
+    @GetMapping("/download/{fileName}")
+    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
         byte[] data = storageService.downloadFile(fileName);
-        ByteArrayResource resource =
+        ByteArrayResource resource = new ByteArrayResource(toString().getBytes());
+        return ResponseEntity.ok().contentLength(data.length)
+                .header("Content-type", "application/octet-stream")
+                .header("Content-disposition", "attachment; filename=\"" + fileName + "\"")
+                .body(resource);
     }
 
+    @DeleteMapping("/delete/{fileName}")
+    public ResponseEntity<APIResponse> deleteFile(@PathVariable String fileName) {
+        return storageService.deleteFile(fileName);
+    }
 }
